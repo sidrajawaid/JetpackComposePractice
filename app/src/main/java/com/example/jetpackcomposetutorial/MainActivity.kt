@@ -2,6 +2,8 @@ package com.example.jetpackcomposetutorial
 
 import android.os.Bundle
 import android.util.Log.d
+import android.view.View
+import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -43,14 +45,25 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.FragmentManager
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var ref: FragmentManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-      setContentView(R.layout.activity_main)
-supportFragmentManager.beginTransaction().add(R.id.content,HomeFragment()).commit()
+/*      setContentView(R.layout.activity_main)
+ref= supportFragmentManager
+    ref.beginTransaction().add(R.id.content,ComposeFragment()).commit()
+  */
+
+  setContent { ComposeWithXML() }
+
+
+
     }
 }
 
@@ -134,7 +147,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 }
 
 fun changeFragment(){
-    MainActivity().supportFragmentManager.beginTransaction().add(R.id.content,ComposeFragment()).commit()
+
+    MainActivity().supportFragmentManager.beginTransaction().replace(R.id.content,ComposeFragment()).commit()
 }
 
 data class User(val id: Int)
@@ -191,6 +205,14 @@ fun GreetingPreview() {
     JetpackComposeTutorialTheme {
         incrementList()
     }
+}
+
+
+@Composable
+fun ComposeWithXML(){
+AndroidView(factory = {View.inflate(it,R.layout.child_layout,null) },
+    modifier =Modifier.fillMaxSize() ,
+    update = {it.findViewById<ImageView>(R.id.man_on_swing).setOnClickListener { generateToast() }} )
 }
 
 @Composable
