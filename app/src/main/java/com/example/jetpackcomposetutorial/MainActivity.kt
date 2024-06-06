@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log.d
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -45,21 +46,11 @@ import androidx.compose.ui.unit.sp
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            JetpackComposeTutorialTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.onSecondary,
-
-                    ) {
-                    incrementList()
-                }
-            }
-        }
+      setContentView(R.layout.activity_main)
+supportFragmentManager.beginTransaction().add(R.id.content,HomeFragment()).commit()
     }
 }
 
@@ -72,6 +63,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(6.dp)
+
     ) {
 
 
@@ -79,6 +71,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
             modifier = modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+
         ) {
 
             Column(
@@ -94,6 +87,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         .size(80.dp)
                         .clip(CircleShape)
                         .padding(6.dp)
+                        .clickable { changeFragment() }
+
                 )
             }
 
@@ -136,6 +131,10 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         }
     }
 
+}
+
+fun changeFragment(){
+    MainActivity().supportFragmentManager.beginTransaction().add(R.id.content,ComposeFragment()).commit()
 }
 
 data class User(val id: Int)
@@ -192,4 +191,9 @@ fun GreetingPreview() {
     JetpackComposeTutorialTheme {
         incrementList()
     }
+}
+
+@Composable
+fun showFullComposeView(){
+
 }
