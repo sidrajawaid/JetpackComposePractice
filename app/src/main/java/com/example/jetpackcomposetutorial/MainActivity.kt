@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,14 +21,11 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
@@ -47,28 +43,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.NavHostController
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     private lateinit var ref: FragmentManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-/*      setContentView(R.layout.activity_main)
-ref= supportFragmentManager
-    ref.beginTransaction().add(R.id.content,ComposeFragment()).commit()
-  */
+        /* setContentView(R.layout.activity_main)
 
-  setContent { ComposeWithXML() }
+    supportFragmentManager.beginTransaction().add(R.id.content,HomeFragment()).commit()*/
+
+        setContent {
+            JetpackComposeTutorialTheme {
+                NavHost()
+            }
 
 
-
+        }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting( navCont: NavHostController,name: String, modifier: Modifier = Modifier) {
 
     Card(
         elevation = CardDefaults.cardElevation(4.dp),
@@ -100,7 +99,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
                         .size(80.dp)
                         .clip(CircleShape)
                         .padding(6.dp)
-                        .clickable { changeFragment() }
+                        .clickable { changeFragment(navCont) }
 
                 )
             }
@@ -146,22 +145,22 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
 }
 
-fun changeFragment(){
+fun changeFragment(navCont: NavHostController) {
+navCont.navigate("composeFragment")
 
-    MainActivity().supportFragmentManager.beginTransaction().replace(R.id.content,ComposeFragment()).commit()
 }
 
 data class User(val id: Int)
 
 @Composable
-fun incrementList() {
+fun incrementList(navCont: NavHostController) {
 
     val user = User(1)
 
     val users = remember { mutableStateListOf(user) }
 
     Box(modifier = Modifier.fillMaxHeight()) {
-        showList(userList = users)
+        showList(userList = users,navCont)
         Button(modifier = Modifier.align(Alignment.BottomStart), onClick = {
             users.add(User(1))
         }) {
@@ -184,11 +183,11 @@ fun incrementList() {
 
 
 @Composable
-fun showList(userList: List<User>) {
+fun showList(userList: List<User>, navCont: NavHostController) {
 
     LazyColumn {
         items(userList) { user ->
-            Greeting(name = "Sidra")
+            Greeting(navCont,name = "Sidra")
 
 
         }
@@ -199,13 +198,7 @@ fun generateToast() {
     d("<><>", "Item clicked")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JetpackComposeTutorialTheme {
-        incrementList()
-    }
-}
+
 
 
 @Composable
@@ -217,5 +210,19 @@ AndroidView(factory = {View.inflate(it,R.layout.child_layout,null) },
 
 @Composable
 fun showFullComposeView(){
+    JetpackComposeTutorialTheme {
 
+Column (modifier = Modifier.fillMaxSize()) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_background),
+        contentDescription = "",
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    )
+    Text(text = "This is compose view")
+}
+
+
+}
 }
