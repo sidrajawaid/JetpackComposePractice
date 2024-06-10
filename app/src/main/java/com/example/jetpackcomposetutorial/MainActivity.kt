@@ -58,8 +58,6 @@ class MainActivity : ComponentActivity() {
             JetpackComposeTutorialTheme {
                 NavHost()
             }
-
-
         }
     }
 }
@@ -118,7 +116,7 @@ fun Greeting( navCont: NavHostController,name: String, modifier: Modifier = Modi
                         .padding(6.dp)
                         .border(2.dp, MaterialTheme.colorScheme.background, RectangleShape)
                         .clickable {
-                            generateToast()
+                          //  generateToast()
                         }
 
                 )
@@ -131,7 +129,7 @@ fun Greeting( navCont: NavHostController,name: String, modifier: Modifier = Modi
                         .padding(6.dp)
                         .border(2.dp, MaterialTheme.colorScheme.onSecondary, RectangleShape)
                         .clickable {
-                            generateToast()
+                           // generateToast()
                         }
 
                 )
@@ -190,20 +188,6 @@ fun showList(userList: List<User>, navCont: NavHostController) {
 
         }
     }
-}
-
-fun generateToast() {
-    d("<><>", "Item clicked")
-}
-
-
-
-
-@Composable
-fun ComposeWithXML(){
-AndroidView(factory = {View.inflate(it,R.layout.child_layout,null) },
-    modifier =Modifier.fillMaxSize() ,
-    update = {it.findViewById<ImageView>(R.id.man_on_swing).setOnClickListener { generateToast() }} )
 }
 
 @Composable
