@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -44,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import com.example.jetpackcomposetutorial.ui.theme.JetpackComposeTutorialTheme
 
 
@@ -56,7 +59,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             JetpackComposeTutorialTheme {
-                NavHost()
+                MainContent()
             }
         }
     }
@@ -202,7 +205,7 @@ Column (modifier = Modifier.fillMaxSize()) {
             .fillMaxWidth()
             .wrapContentHeight()
     )
-    Text(text = "This is compose view")
+    Text(text = "This is compose view", modifier = Modifier.clickable {  })
 }
 
 
