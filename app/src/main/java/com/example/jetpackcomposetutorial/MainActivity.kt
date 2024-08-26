@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavHostController
 import androidx.navigation.Navigation
@@ -63,151 +64,151 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun Greeting( navCont: NavHostController,name: String, modifier: Modifier = Modifier) {
-
-    Card(
-        elevation = CardDefaults.cardElevation(4.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(6.dp)
-
-    ) {
 
 
-        Row(
-            modifier = modifier
+    @Composable
+    fun Greeting(navCont: NavHostController, name: String, modifier: Modifier = Modifier) {
+
+        Card(
+            elevation = CardDefaults.cardElevation(4.dp),
+            modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
+                .padding(6.dp)
 
         ) {
 
-            Column(
+
+            Row(
                 modifier = modifier
+                    .fillMaxWidth()
                     .wrapContentHeight()
-                    .wrapContentWidth()
+
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
+
+                Column(
                     modifier = modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .padding(6.dp)
-                        .clickable { changeFragment(navCont) }
+                        .wrapContentHeight()
+                        .wrapContentWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                        modifier = modifier
+                            .size(80.dp)
+                            .clip(CircleShape)
+                            .padding(6.dp)
+                            .clickable { changeFragment(navCont) }
 
-                )
+                    )
+                }
+
+
+                Column(
+                    modifier = modifier
+                        .wrapContentHeight()
+                        .wrapContentWidth()
+                ) {
+
+                    Text(
+                        text = "Hello $name!",
+                        fontSize = 18.sp,
+                        fontStyle = FontStyle.Italic,
+                        fontFamily = FontFamily.Serif,
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .border(2.dp, MaterialTheme.colorScheme.background, RectangleShape)
+                            .clickable {
+                                //  generateToast()
+                            }
+
+                    )
+
+                    Text(
+                        text = "Hello $name!",
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily.Serif,
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .border(2.dp, MaterialTheme.colorScheme.onSecondary, RectangleShape)
+                            .clickable {
+                                // generateToast()
+                            }
+
+                    )
+
+                }
+
             }
-
-
-            Column(
-                modifier = modifier
-                    .wrapContentHeight()
-                    .wrapContentWidth()
-            ) {
-
-                Text(
-                    text = "Hello $name!",
-                    fontSize = 18.sp,
-                    fontStyle = FontStyle.Italic,
-                    fontFamily = FontFamily.Serif,
-                    modifier = Modifier
-                        .padding(6.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.background, RectangleShape)
-                        .clickable {
-                          //  generateToast()
-                        }
-
-                )
-
-                Text(
-                    text = "Hello $name!",
-                    fontSize = 12.sp,
-                    fontFamily = FontFamily.Serif,
-                    modifier = Modifier
-                        .padding(6.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.onSecondary, RectangleShape)
-                        .clickable {
-                           // generateToast()
-                        }
-
-                )
-
-            }
-
         }
+
     }
 
-}
+    fun changeFragment(navCont: NavHostController) {
+        navCont.navigate("composeFragment")
 
-fun changeFragment(navCont: NavHostController) {
-navCont.navigate("composeFragment")
+    }
 
-}
+    data class User(val id: Int)
 
-data class User(val id: Int)
+    @Composable
+    fun incrementList(navCont: NavHostController) {
 
-@Composable
-fun incrementList(navCont: NavHostController) {
+        val user = User(1)
 
-    val user = User(1)
+        val users = remember { mutableStateListOf(user) }
 
-    val users = remember { mutableStateListOf(user) }
+        Box(modifier = Modifier.fillMaxHeight()) {
+            showList(userList = users, navCont)
+            Button(modifier = Modifier.align(Alignment.BottomStart), onClick = {
+                users.add(User(1))
+            }) {
 
-    Box(modifier = Modifier.fillMaxHeight()) {
-        showList(userList = users,navCont)
-        Button(modifier = Modifier.align(Alignment.BottomStart), onClick = {
-            users.add(User(1))
-        }) {
+                Text(text = "Add row")
+            }
 
-            Text(text = "Add row")
-        }
-
-        Button(modifier = Modifier.align(Alignment.BottomEnd)
-            , onClick = {
+            Button(modifier = Modifier.align(Alignment.BottomEnd), onClick = {
                 users.removeLast()
             }) {
 
-            Text(text = "delete row")
-        }
-
-
-    }
-
-}
-
-
-@Composable
-fun showList(userList: List<User>, navCont: NavHostController) {
-
-    LazyColumn {
-        items(userList) { user ->
-            Greeting(navCont,name = "Sidra")
+                Text(text = "delete row")
+            }
 
 
         }
+
     }
-}
-
-@Composable
-fun showFullComposeView(){
-    JetpackComposeTutorialTheme {
-
-Column (modifier = Modifier.fillMaxSize()) {
-    Image(
-        painter = painterResource(id = R.drawable.ic_launcher_background),
-        contentDescription = "",
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    )
-    Text(text = "This is compose view", modifier = Modifier.clickable {  })
-}
 
 
-}
+    @Composable
+    fun showList(userList: List<User>, navCont: NavHostController) {
+
+        LazyColumn {
+            items(userList) { user ->
+                Greeting(navCont, name = "Sidra")
+
+
+            }
+        }
+    }
+
+    @Composable
+    fun showFullComposeView() {
+        JetpackComposeTutorialTheme {
+
+            Column(modifier = Modifier.fillMaxSize()) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                )
+                Text(text = "This is compose view", modifier = Modifier.clickable { })
+            }
+
+
+        }
+    }
 }
